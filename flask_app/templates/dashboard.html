@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{session["first_name"]}}'s Dashboard</title>
+
+</head>
+<body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <p style="color:red">{{message}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <h1>Welcome! {{session["first_name"]}}</h1>
+    <h2>These are the recipes</h2>
+    <table width="800" border="1">
+        <thead>
+            <th>Name</th>
+            <th>Under 30 Minutes</th>
+            <th>Actions</th>
+        </thead>
+        {% for r in get_recipes_thirty %}
+        <tr>
+            <td>{{r.recipes}}</td>
+            <td>{{r.under_thirty}}</td>
+            <td>
+                <a href="/oneuser_recipes/{{r.id}}">view instructions</a>
+                {% if r.user_id == session["user_id"] %}
+                <a href="/edit_get/{{r.id}}">edit</a>
+                <a href="/delete/{{r.id}}">delete</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="/logout">Logout</a>
+    <a href="/add_recipe">Create</a>
+</body>
+</html>
